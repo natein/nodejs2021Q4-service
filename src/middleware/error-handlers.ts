@@ -3,16 +3,16 @@ import { Request, Response, NextFunction, RequestHandler } from 'express';
 import CustomError from '../common/custom-error';
 import { logger } from './logger';
 
-const uncaughtExceptionHandler = (err: Error) => {
+const uncaughtExceptionHandler = (err: Error): void => {
   logger.error(`Encaught exception: ${err.message}`);
 };
 
-const unhandledRejectionHandler = (err: Error) => {
+const unhandledRejectionHandler = (err: Error): void => {
   logger.error(`Unhandled rejection: ${err.message}`);
 };
 
 const asyncErrorHandler = (callback: RequestHandler) => 
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction): Promise<unknown> => {
   try {
     return await callback(req, res, next);
   } catch (err) {
@@ -20,7 +20,8 @@ const asyncErrorHandler = (callback: RequestHandler) =>
   }
 };
 
-const errorHandler = (err: Error, _req: Request, res: Response, next: NextFunction) => {
+const errorHandler = (err: Error, _req: Request, res: Response, 
+  next: NextFunction):unknown => {
   const { message } = err;
 
   logger.error(message);
