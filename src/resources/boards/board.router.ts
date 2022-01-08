@@ -1,5 +1,6 @@
 import express from 'express';
 import * as boardsService  from './board.service';
+import { asyncErrorHandler } from '../../middleware/error-handlers';
 
 const router = express.Router();
 
@@ -13,16 +14,19 @@ router.route('/')
 
 // GET /boards/:boardId - get the board by id
 
-router.route('/:boardId')
-  .get(async (req, res) => {
-    const {boardId} = req.params;
-    try{
-      const board = await boardsService.get(boardId);
-      res.json(board);
-    } catch {
-      res.status(404).send('Board not found');
-    }
-  });
+  router.route('/:boardId').get(
+    asyncErrorHandler(async (req, res) => {    
+      try{
+        const {boardId} = req.params;
+        if (boardId) {
+          const board = await boardsService.get(boardId);
+          res.json(board);
+        }
+      } catch {
+        res.status(404).send('Board not found');
+      }
+    })
+  );
 
 // POST /boards - create board
 

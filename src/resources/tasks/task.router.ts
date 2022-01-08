@@ -1,5 +1,6 @@
 import express from 'express';
 import * as tasksService  from './task.service';
+import { asyncErrorHandler } from '../../middleware/error-handlers';
 
 const router = express.Router();
 
@@ -14,16 +15,19 @@ router.route('/:boardId/tasks')
 
 // GET /boards/:boardId - get the board by id
 
-router.route('/:boardId/tasks/:id')
-  .get(async (req, res) => {
-    const {id} = req.params;
+router.route('/:boardId/tasks/:id').get(
+  asyncErrorHandler(async (req, res) => {    
     try{
-      const task = await tasksService.get(id);
-      res.json(task);
+      const {id} = req.params;
+      if (id) {
+        const task = await tasksService.get(id);
+        res.json(task);
+      }
     } catch {
       res.status(404).send('Task not found');
     }  
-  });
+  })
+);
   
 // POST boards/:boardId/tasks - create task  
   

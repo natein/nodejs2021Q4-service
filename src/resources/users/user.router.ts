@@ -1,6 +1,7 @@
 import express from 'express';
 import User from './user.model';
 import * as usersService  from './user.service';
+import { asyncErrorHandler } from '../../middleware/error-handlers';
 
 const router = express.Router();
 
@@ -16,12 +17,15 @@ router.route('/')
 // GET /users/:userId - get the user by id 
 // (remove password from response)
 
-router.route('/:id')
-  .get(async (req, res) => {
-    const {id} = req.params;
-    const user = await usersService.get(id);
-    res.json(user);
-  });
+  router.route('/:id').get(
+    asyncErrorHandler(async (req, res) => {
+      const {id} = req.params;
+      if (id) {
+        const user = await usersService.get(id);
+        res.json(User.toResponse(user));      
+      }
+    })
+  );  
   
 // POST /users - create user  
   
