@@ -1,7 +1,7 @@
 FROM node:16.13.1-alpine3.14
 WORKDIR /app
-COPY package*.json .
+COPY package*.json ./
 RUN npm install
-COPY . .
-EXPOSE 8080
+COPY . ./
+EXPOSE ${PORT}
 CMD ["npm", "start"]
