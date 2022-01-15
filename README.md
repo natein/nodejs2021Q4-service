@@ -4,11 +4,25 @@
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
 - Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
+- Docker - [Download & Install Docker](https://docs.docker.com/get-docker/)
 
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone https://github.com/natein/nodejs2021Q4-service.git
+```
+## Using docker
+
+Change directory to nodejs2021q4-service
+
+Create a docker image and start the container
+
+```
+docker-compose up --build
+```
+Shut down containers
+```
+docker-compose down;
 ```
 
 ## Installing NPM modules

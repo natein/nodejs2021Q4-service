@@ -1,0 +1,38 @@
+version: '3'
+services:
+  node:
+    build: .
+    ports:
+      - ${PORT}:${PORT}
+    container_name: dnode
+    depends_on:
+      - postgres
+    environment:
+      - PORT=${PORT}
+    restart: always
+    volumes:
+      - ./logs:/app/logs
+      - ./src:/app/src
+    networks:
+      - user-defined
+  postgres:
+    build: ./db/
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    container_name: dpostgre
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - user-defined
+
+networks:
+  user-defined:
+    driver: bridge
+volumes:
+  pgdata:
+  
