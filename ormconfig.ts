@@ -19,7 +19,7 @@ const config: ConnectionOptions = {
   username: process.env['POSTGRES_USER'] || 'postgres',
   password: process.env['POSTGRES_PASSWORD'] || 'postgres',
   database: process.env['POSTGRES_DB'] || 'postgres',
-  logging: false,
+  logging: true,
   entities: ['./src/entities/**/*.ts'],
   migrations: ['./src/migrations/**/*.ts'],
   cli: {
