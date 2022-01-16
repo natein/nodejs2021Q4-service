@@ -14,7 +14,7 @@ const config: ConnectionOptions = {
   type: 'postgres',
   synchronize: process.env['DB_SYNC'] === 'true',
   migrationsRun: true,
-  host: process.env['DPOSTGRES_HOST'],
+  host: process.env['POSTGRES_HOST'],
   port,
   username: process.env['POSTGRES_USER'] || 'postgres',
   password: process.env['POSTGRES_PASSWORD'] || 'postgres',
