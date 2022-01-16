@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import * as tasksService  from './task.service';
 import { asyncErrorHandler } from '../../middleware/error-handlers';
 
@@ -16,16 +16,14 @@ router.route('/:boardId/tasks')
 // GET /boards/:boardId - get the board by id
 
 router.route('/:boardId/tasks/:id').get(
-  asyncErrorHandler(async (req, res) => {    
-    try{
-      const {id} = req.params;
-      if (id) {
-        const task = await tasksService.get(id);
-        res.json(task);
-      }
-    } catch {
-      res.status(404).send('Task not found');
-    }  
+  asyncErrorHandler(async (req: Request, res: Response) => {
+    const {boardId, id} = req.params;
+    if (id && boardId) {
+      const task = await tasksService.get(boardId, id);
+      if(task === 'NOT_FOUND')
+        res.status(404).send('Task not found');
+      else res.json(task);
+    }
   })
 );
   

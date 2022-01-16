@@ -24,11 +24,11 @@ const messageFormat = (req: Request, res: Response) => {
 };
 
 const getCurrentLevel = (level: string | undefined): string => {
-  let curLevel: string = '';
+  let curLevel = '';
   Object.entries(logLevels).forEach(([key, value]) => {
     if(value.toString() === level) curLevel = key;
   });
-  return curLevel ? curLevel : 'info'; 
+  return curLevel || 'info'; 
 };
 
 const options = {

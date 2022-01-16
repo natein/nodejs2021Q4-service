@@ -5,11 +5,20 @@ import { logger } from './logger';
 
 const uncaughtExceptionHandler = (err: Error): void => {
   logger.error(`Encaught exception: ${err.message}`);
+  process.exit(1);
 };
 
 const unhandledRejectionHandler = (err: Error): void => {
   logger.error(`Unhandled rejection: ${err.message}`);
+  process.exit(1);
 };
+
+/*
+const unhandledRejectionHandler = ( reason: any, promise: Promise<any>): void => {
+  logger.error(`Unhandled rejection: ${ reason }, ${ promise }`);
+  process.exit(1);
+};
+*/
 
 const asyncErrorHandler = (callback: RequestHandler) => 
   async (req: Request, res: Response, next: NextFunction): Promise<unknown> => {

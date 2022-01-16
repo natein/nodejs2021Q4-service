@@ -1,5 +1,5 @@
-import express from 'express';
-import User from './user.model';
+import express, { Request, Response } from 'express';
+import User from '../../entities/user.model';
 import * as usersService  from './user.service';
 import { asyncErrorHandler } from '../../middleware/error-handlers';
 
@@ -18,11 +18,13 @@ router.route('/')
 // (remove password from response)
 
   router.route('/:id').get(
-    asyncErrorHandler(async (req, res) => {
+    asyncErrorHandler(async (req: Request, res: Response) => {
       const {id} = req.params;
-      if (id) {
+      if(id) {
         const user = await usersService.get(id);
-        res.json(User.toResponse(user));      
+        if(user !== 'NOT_FOUND')
+          res.json(User.toResponse(user as User));
+        else res.status(404).json({ message: 'User not found'});
       }
     })
   );  
