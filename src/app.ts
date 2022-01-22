@@ -6,10 +6,14 @@ import { StatusCodes } from 'http-status-codes';
 
 import CustomError from './common/custom-error';
 
+// Routes
+import { router as loginRouter } from './resources/login/login.router';
 import { router as userRouter } from './resources/users/user.router';
 import { router as boardRouter } from './resources/boards/board.router';
 import { router as taskRouter } from './resources/tasks/task.router';
 
+// Middlewares
+import { jwtChecking } from './middleware/jwtChecking';
 import { middlewareLogger } from './middleware/logger';
 import { uncaughtExceptionHandler, unhandledRejectionHandler, errorHandler } 
   from './middleware/error-handlers';
@@ -33,6 +37,9 @@ app.use('/', (req, res, next) => {
   next();
 });
 
+app.use('/login', loginRouter);
+// Проверка на наличие токена, выполнена в модуле ./middleware/jwtChecking
+app.use(jwtChecking);
 app.use('/users', userRouter);
 app.use('/boards', [boardRouter, taskRouter]);
 

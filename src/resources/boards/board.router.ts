@@ -1,4 +1,5 @@
 import express from 'express';
+import StatusCodes from 'http-status-codes';
 import * as boardsService  from './board.service';
 import { asyncErrorHandler } from '../../middleware/error-handlers';
 
@@ -20,7 +21,7 @@ router.route('/:boardId').get(
     if (boardId) {
       const board = await boardsService.get(boardId);
       if(board === 'NOT_FOUND')
-        res.status(404).send('Board not found');
+        res.status(StatusCodes.NOT_FOUND).send('Board not found');
       else res.json(board);
     }
   })
@@ -31,7 +32,7 @@ router.route('/:boardId').get(
 router.route('/')
   .post(async (req, res) => {
     const board = await boardsService.insert(req.body);
-    res.status(201).json(board);
+    res.status(StatusCodes.CREATED).json(board);
   });
 
 // PUT /boards/:boardId - update board
@@ -49,9 +50,9 @@ router.route('/:boardId')
     const {boardId} = req.params;
     try {
       await boardsService.remove(boardId);
-      res.status(204).send('The board has been deleted');
+      res.status(StatusCodes.NO_CONTENT).send('The board has been deleted');
     } catch (error) {
-      res.status(404).send('Board not found');
+      res.status(StatusCodes.NOT_FOUND).send('Board not found');
     }
   });
 

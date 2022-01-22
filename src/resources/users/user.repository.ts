@@ -1,6 +1,31 @@
 import { getRepository } from 'typeorm';
+import bcrypt from 'bcryptjs';
 import { IUser } from '../../common/types';
 import User from'../../entities/user.model';
+
+const SALT_ROUNDS  = 10;
+
+/**
+ * Return hash of password
+ * @param login - login string
+ * @returns hash promise
+ */
+
+const getHash = async (param: string): Promise<string> => {
+  const salt = await bcrypt.genSalt(SALT_ROUNDS);
+  const hash = await bcrypt.hash(param, salt);
+  return hash;
+};
+
+/**
+ * Return users by login
+ * @param login - login
+ * @returns User object
+ */
+const getByLogin = async (login: string): Promise<User | undefined> => {
+  const userRepository = getRepository(User);
+  return userRepository.findOne({ where: { login } });
+};
 
 /**
  * Get all users
@@ -30,6 +55,8 @@ const get = async (id: string): Promise<IUser | 'NOT_FOUND'> => {
  */
 const insert = async (user: IUser): Promise<IUser> => {
   const userRepository = getRepository(User);
+  const { password } = user;
+  user.password = await getHash(password);
   const newUser = userRepository.create(user);
   const savedUser = userRepository.save(newUser);
   return savedUser;
@@ -61,6 +88,7 @@ const remove = async (id: string): Promise<'DELETED' | 'NOT_FOUND' > => {
 };
 
 export {
+  getByLogin,
   getAll,
   get,
   remove,
