@@ -16,7 +16,8 @@
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js",
     "migration:generate": "npm run typeorm migration:generate -- -n migration --config ormconfig.ts",
-    "migration:run": "npm run typeorm migration:run"
+    "migration:run": "npm run typeorm migration:run",
+    "migration:revert": "npm run typeorm migration:revert"
   },
   "keywords": [
     "rs",
