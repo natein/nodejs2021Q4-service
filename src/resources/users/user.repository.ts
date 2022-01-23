@@ -72,6 +72,8 @@ const update = async (id: string, user: IUser): Promise<IUser | 'NOT_FOUND'> => 
   const userRepository = getRepository(User);
   const res = await userRepository.findOne(id);
   if (res === undefined) return 'NOT_FOUND';
+  const { password } = user;
+  user.password = await getHash(password); 
   const updatedRes = await userRepository.update(id, user);
   return updatedRes.raw;
 };
