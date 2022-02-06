@@ -14,19 +14,17 @@ router.route('/')
 
 // GET /boards/:boardId - get the board by id
 
-  router.route('/:boardId').get(
-    asyncErrorHandler(async (req, res) => {    
-      try{
-        const {boardId} = req.params;
-        if (boardId) {
-          const board = await boardsService.get(boardId);
-          res.json(board);
-        }
-      } catch {
+router.route('/:boardId').get(
+  asyncErrorHandler(async (req, res) => {
+    const {boardId} = req.params;
+    if (boardId) {
+      const board = await boardsService.get(boardId);
+      if(board === 'NOT_FOUND')
         res.status(404).send('Board not found');
-      }
-    })
-  );
+      else res.json(board);
+    }
+  })
+);
 
 // POST /boards - create board
 

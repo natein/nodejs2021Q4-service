@@ -1,5 +1,5 @@
 import { IBoard } from '../../common/types';
-import * as boardsRepo from './board.memory.repository';
+import * as boardsRepo from './board.repository';
 
 /**
  * Get all boards
@@ -12,7 +12,7 @@ const getAll = ():Promise<IBoard[]> => boardsRepo.getAll();
  * @param id - Identifier of the board
  * @returns Promise Board object.
  */
-const get = (id: string):Promise<IBoard> => boardsRepo.get(id);
+const get = (id: string):Promise<IBoard | string> => boardsRepo.get(id);
 
 /**
  * Insert Board to database.
@@ -27,13 +27,13 @@ const insert = (board: IBoard):Promise<IBoard> => boardsRepo.insert(board);
  * @param board - Instance of Board class.
  * @returns Promise updated Board object
  */
-const update = (id: string, board: IBoard):Promise<IBoard> => boardsRepo.update(id, board);
+const update = (id: string, board: IBoard):Promise<IBoard | string> => boardsRepo.update(id, board);
 
 /**
  * Delete Board with specified identifier
  * @param id - Board identifier.
  */
-const remove = (id: string):Promise<void> => boardsRepo.remove(id);
+const remove = (id: string):Promise<string> => boardsRepo.remove(id);
 
 export {
   getAll,

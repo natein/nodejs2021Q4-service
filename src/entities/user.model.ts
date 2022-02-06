@@ -1,17 +1,23 @@
 import { v4 as uuid } from 'uuid';
-import { IUser, IUserToResponse } from '../../common/types';
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { IUser, IUserToResponse } from '../common/types';
 
 /**
  * User class.
  */
-class User {
-    id: string;
+ @Entity({name: 'user'})
+class User implements IUser {
+  @PrimaryGeneratedColumn('uuid')  
+  id: string;
+  
+  @Column('varchar', {length: 50})
+  name: string;
 
-    name: string;
+  @Column('varchar', {length: 50})
+  login: string;
 
-    login: string;
-
-    password: string;   
+  @Column('varchar', {length: 50})
+  password: string;   
 
   /**
    * User constructor.
@@ -19,7 +25,7 @@ class User {
    * @param name - user name
    * @param login - login
    * @param password - password
-   */   
+   */     
   constructor({
     id = uuid(),
     name = 'USER',

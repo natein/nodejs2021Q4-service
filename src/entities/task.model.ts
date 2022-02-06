@@ -1,22 +1,44 @@
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
-import { ITask, IUser } from '../../common/types';
+import { ITask, IUser } from '../common/types';
+import User from './user.model';
+import Board from './board.model';
 
 /**
  * class Task
  */
+
+ @Entity({name: 'task'})
 class Task {
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column('varchar', {length: 50})
   title: string;
 
+  @Column('integer')
   order: number;
-
+  
+  @Column('varchar', {length: 150})
   description: string;
 
-  userId: string | null;
+  @ManyToOne(() => User, (user) => user.id, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
 
-  boardId: string;
+  @JoinColumn({ name: 'userId' })
+  userId: string | null = null;
 
+  @ManyToOne(() => Board, (board) => board.id, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+
+  @JoinColumn({ name: 'boardId' })
+  boardId: string | null = null;
+
+  @Column('varchar', {length: 40, nullable: true})
   columnId: string;
   
   /**
@@ -28,7 +50,7 @@ class Task {
    * @param userId - task owner identifier
    * @param boardId - board identifier
    * @param columnId - column identifier
-   */  
+   */   
   constructor({
     id = uuid(),
     title = 'Task',
@@ -50,7 +72,7 @@ class Task {
   /**
    * Assign user to task 
    * @param user - User instance.
-   */  
+   */ 
   assignUser(user: IUser):void {
     this.userId = user.id;
   }
