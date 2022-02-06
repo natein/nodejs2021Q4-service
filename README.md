@@ -11,7 +11,6 @@
 ```
 git clone https://github.com/natein/nodejs2021Q4-service.git
 ```
-## Using docker
 
 ## Artillery results
 
@@ -22,6 +21,8 @@ git clone https://github.com/natein/nodejs2021Q4-service.git
 | Latency, ms           | [min, max, median, p95, p99]       | 0, 8420, 10, 5469, 7324.7                 | 0, 7991, 10, 4577.1, 6645.9             |
 | Scenario duration, ms | [min, max, median, p95, p99]       | 8327.8, 29447.3, 8546.0, 27822.9, 25468.1 | 7945.9, 25836.2, 7892, 23971.5, 22432.8 |
 
+
+## Using docker
 
 Change directory to nodejs2021q4-service
 
