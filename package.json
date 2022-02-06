@@ -16,7 +16,8 @@
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js",
     "migration:generate": "npm run typeorm migration:generate -- -n migration --config ormconfig.ts",
-    "migration:run": "npm run typeorm migration:run"
+    "migration:run": "npm run typeorm migration:run",
+    "migration:revert": "npm run typeorm migration:revert"
   },
   "keywords": [
     "rs",
@@ -48,16 +49,22 @@
     ]
   },
   "dependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.12",
+    "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^15.6.1",
     "@types/swagger-ui-express": "^4.1.2",
     "@types/uuid": "^8.3.0",
     "@types/yamljs": "^0.2.31",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "cross-env": "7.0.3",
     "dotenv": "9.0.0",
     "express": "4.17.1",
     "express-winston": "^4.2.0",
     "http-status-codes": "^2.1.4",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.1",
     "swagger-ui-express": "^4.3.0",
     "ts-node": "^10.0.0",

@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import StatusCodes from 'http-status-codes';
 import * as tasksService  from './task.service';
 import { asyncErrorHandler } from '../../middleware/error-handlers';
 
@@ -21,7 +22,7 @@ router.route('/:boardId/tasks/:id').get(
     if (id && boardId) {
       const task = await tasksService.get(boardId, id);
       if(task === 'NOT_FOUND')
-        res.status(404).send('Task not found');
+        res.status(StatusCodes.NOT_FOUND).send('Task not found');
       else res.json(task);
     }
   })
@@ -36,7 +37,7 @@ router.route('/:boardId/tasks')
       req.body.boardId = boardId;
     }
     const task = await tasksService.insert(req.body);
-    res.status(201).json(task);
+    res.status(StatusCodes.CREATED).json(task);
   });
 
 // PUT boards/:boardId/tasks/:taskId - update task
@@ -54,9 +55,9 @@ router.route('/:boardId/tasks/:id')
     const {id} = req.params;
     try {
       await tasksService.remove(id);
-      res.status(204).send('The task has been deleted');
+      res.status(StatusCodes.NO_CONTENT).send('The task has been deleted');
     } catch (error) {
-      res.status(404).send('Board not found');
+      res.status(StatusCodes.NOT_FOUND).send('Board not found');
     }
   });
 

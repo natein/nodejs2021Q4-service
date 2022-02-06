@@ -1,4 +1,4 @@
-import { getStatusCode } from 'http-status-codes';
+import { StatusCodes, getStatusCode } from 'http-status-codes';
 
 class CustomError extends Error {
 
@@ -6,7 +6,7 @@ class CustomError extends Error {
 
   message: string;
 
-  constructor(statusCode = 200, message = '') {
+  constructor(statusCode = StatusCodes.OK, message = '') {
     const customMessage = message ? `. ${message}` : '';
 
     super();

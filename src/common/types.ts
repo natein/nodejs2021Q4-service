@@ -33,10 +33,9 @@ interface ITask {
   columnId: string;
 }
 
-interface IDataBase {
-  users: IUser[];
-  boards: IBoard[];
-  tasks: ITask[];
+interface ICredentials {
+  login: string;
+  password: string;
 }
 
 export {
@@ -45,5 +44,5 @@ export {
   IBoard,
   ITask,
   IColumn,
-  IDataBase
+  ICredentials
 };

@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import StatusCodes from 'http-status-codes';
 import User from '../../entities/user.model';
 import * as usersService  from './user.service';
 import { asyncErrorHandler } from '../../middleware/error-handlers';
@@ -24,7 +25,7 @@ router.route('/')
         const user = await usersService.get(id);
         if(user !== 'NOT_FOUND')
           res.json(User.toResponse(user as User));
-        else res.status(404).json({ message: 'User not found'});
+        else res.status(StatusCodes.NOT_FOUND).json({ message: 'User not found'});
       }
     })
   );  
@@ -34,7 +35,7 @@ router.route('/')
 router.route('/')
   .post(async (req, res) => {
     const user = await usersService.insert(req.body);
-    res.status(201).json(User.toResponse(user));
+    res.status(StatusCodes.CREATED).json(User.toResponse(user));
   });
 
 // PUT /users/:userId - update user  
