@@ -1,0 +1,42 @@
+config:
+  target: "http://localhost:4000"
+  phases:
+    - duration: 60
+      arrivalRate: 10
+scenarios:
+  - flow:
+      - post:
+          url: '/login'
+          json:
+            login: "admin"
+            password: "admin"
+          capture:
+            json: '$.token'
+            as: 'token'
+      - post:
+          headers:
+            authorization: 'Bearer {{token}}'
+          url: '/users'
+          json:
+            login: "testing{{ $randomString(10) }}"
+            name: "testing"
+            password: "123456"
+          capture:
+            json: '$.id'
+            as: 'id'
+      - get:
+          headers:
+            authorization: 'Bearer {{token}}'
+          url: '/users'
+      - put:
+          headers:
+            authorization: 'Bearer {{token}}'
+          url: '/users/{{ id }}'
+          json:
+            login: "testing{{ $randomString(10) }}"
+            name: "testing"
+            password: "123456"
+      - delete:
+          headers:
+            authorization: 'Bearer {{token}}'
+          url: '/users/{{ id }}'
