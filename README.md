@@ -11,6 +11,17 @@
 ```
 git clone https://github.com/natein/nodejs2021Q4-service.git
 ```
+
+## Artillery results
+
+|                       |                                    | Express                                   | Fastify                                 |
+| --------------------- | ---------------------------------- | ----------------------------------------- | --------------------------------------- |
+| Scenarios             | [created, completed, success rate] | 5343, 5672, 100%                          | 5267, 5212, 100%                        |
+| Requests              | [total, per second median]         | 25521, 69.21                              | 23587, 67                               |
+| Latency, ms           | [min, max, median, p95, p99]       | 0, 8420, 10, 5469, 7324.7                 | 0, 7991, 10, 4577.1, 6645.9             |
+| Scenario duration, ms | [min, max, median, p95, p99]       | 8327.8, 29447.3, 8546.0, 27822.9, 25468.1 | 7945.9, 25836.2, 7892, 23971.5, 22432.8 |
+
+
 ## Using docker
 
 Change directory to nodejs2021q4-service

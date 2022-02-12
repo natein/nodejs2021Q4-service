@@ -1,40 +1,30 @@
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
-import * as usersRepo from '../users/user.repository';
-import { ICredentials }  from '../../common/types';
-import { JWT_SECRET_KEY } from '../../common/config';
+import { Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcryptjs';
+import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import UserRepository from '../users/users.repository';
+import User from '../users/entities/user.entity';
 
-/**
- * Compare two hash
- * @param param - string to compare
- * @param hash - stored db hash 
- * @returns result of comparison promise
- */
-const compareHash = async ( param: string, hash: string): Promise<boolean> => bcrypt.compare(param, hash);
+const compareHash = async (param: string, hash: string): Promise<boolean> =>
+  bcrypt.compare(param, hash);
 
-/**
- * Get token from login & pasword
- * @param login - user login
- * @param password - user password
- * @returns jwt token or null promise
- */
-export const getToken = async ({ login, password }: ICredentials): Promise<string | null> => {
+@Injectable()
+export default class LoginService {
+  constructor(
+    @InjectRepository(UserRepository) private userRepository: UserRepository,
+    private readonly jwtService: JwtService,
+  ) {}
 
-  if (!JWT_SECRET_KEY) {
-    return null;
+  async login(user: User): Promise<{ token: string }> {
+    const jwtPayload = { userId: user.id, login: user.login };
+    return { token: await this.jwtService.signAsync(jwtPayload) };
   }
 
-  const user = await usersRepo.getByLogin(login);
-
-  if (!user) {
-    return null;
+  async validateUser(login: string, password: string): Promise<User | null> {
+    const user = await this.userRepository.findOne({ where: { login } });
+    if (user) {
+      const hashCompareRes = await compareHash(password, user.password);
+      return hashCompareRes ? user : null;
+    } else return null;
   }
-
-  const isEqual = await compareHash(password, user.password);
-
-  if (!isEqual) {
-    return null;
-  }
-
-  return jwt.sign({ userId: user.id, login }, JWT_SECRET_KEY);
-};
+}
